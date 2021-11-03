@@ -4,8 +4,6 @@ from pydantic import BaseModel
 
 from typing import List
 
-from pydantic import BaseModel
-
 
 class CryptoTrade(BaseModel):
     id: int

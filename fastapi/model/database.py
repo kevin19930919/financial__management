@@ -24,6 +24,15 @@ Base = declarative_base()
 Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 sessionLocal = Session()
 
+def get_db_session():
+    db = SessionLocal()
+    try:
+        yield db
+    except Exception:
+        db.rollback()
+        raise
+    finally:
+        db.close()
 # class DataBase(Base):
 #     # creating a session object then initial it
 #     Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)

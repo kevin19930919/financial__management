@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>
+        KevinTsai Financial Manageent
+    </title>
+    
+    {% block style %}
+    {% endblock %}
+
+</head>
+
+<body class="sb-nav-fixed">
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <a class="nav-link" href="/cryptoInfo">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>
+                            Crypto
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    {% block body %}
+    {% endblock %}
+    {% block script %}
+    {% endblock %}
+</body>
+
+</html>

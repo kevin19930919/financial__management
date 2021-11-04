@@ -12,8 +12,10 @@ app = FastAPI()
 #TODO
 import sys
 sys.path.append('./fastapi')
-from view import crypto
-app.include_router(crypto.cryptoRouter)
+from api import cryptoAPI
+from view import cryptoView
+app.include_router(cryptoAPI.cryptoAPIRouter)
+app.include_router(cryptoView.cryptoInfoRouter)
 
 
 

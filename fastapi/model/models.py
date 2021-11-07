@@ -1,65 +1,45 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float
 from sqlalchemy.orm import relationship
 from sqlalchemy.types import Date
-from .database import Base
-from sqlalchemy.orm import Session
+import sys
+sys.path.append('./fastapi/model')
+from database import Base, hash_func
 
-class CryptoTrade(Base):
-    __tablename__ = 'CryptoTrade'
+class Trade(Base):
+    __tablename__ = 'Trade'
 
     id = Column(Integer, primary_key=True, index=True)
-    target = Column(String(80), unique=True, nullable=False)
-    price = Column(Integer, unique=False, nullable=False)
-    quantity = Column(Integer, unique=False, nullable=False)
+    trade_hash = Column(String(80), default=hash_func, unique=True, nullable=False)
+    price = Column(Float, unique=False, nullable=False)
+    quantity = Column(Float, unique=False, nullable=False)
     date = Column(Date)
-
-    # def get_user(db: Session, user_id: int):
-    #     return db.query(models.User).filter(models.User.id == user_id).first()
-
-
-    # def get_user_by_email(db: Session, email: str):
-    #     return db.query(models.User).filter(models.User.email == email).first()
-
-
-    # def get_users(db: Session, skip: int = 0, limit: int = 100):
-    #     return db.query(models.User).offset(skip).limit(limit).all()
-
-
-    # def create_user(db: Session, user: schemas.UserCreate):
-    #     fake_hashed_password = user.password + "notreallyhashed"
-    #     db_user = models.User(email=user.email, hashed_password=fake_hashed_password)
-    #     db.add(db_user)
-    #     db.commit()
-    #     db.refresh(db_user)
-    #     return db_user
-
-
-    # def update_user(db: Session, user_id: int, update_user: schemas.UserUpdate):
-    #     db_user = db.query(models.User).filter(models.User.id == user_id).first()
-    #     if db_user:
-    #         update_dict = update_user.dict(exclude_unset=True)
-    #         for k, v in update_dict.items():
-    #             setattr(db_user, k, v)
-    #         db.commit()
-    #         db.flush()
-    #         db.refresh(db_user)
-    #         return db_user
-
-
-    # def delete_user(db: Session, user_id: int):
-    #     db_user = db.query(models.User).filter(models.User.id == user_id).first()
-    #     if db_user:
-    #         db.delete(db_user)
-    #         db.commit()
-    #         db.flush()
-    #         return db_user
-
-
-class USStockTrade(Base):
     
-    __tablename__ = 'USStockTrade'
+    crypto = relationship("Crypto", back_populates="trade")
+    us_stock = relationship("USStock", back_populates="trade")
+
+
+class Crypto(Base):
+    __tablename__ = 'Crypto'
+
     id = Column(Integer, primary_key=True, index=True)
-    target = Column(String(80), unique=True, nullable=False)
-    price = Column(Integer, unique=False, nullable=False)
-    quantity = Column(Integer, unique=False, nullable=False)
-    date = Column(Date)
+    target = Column(String(80), unique=False, nullable=False)
+    exchange = Column(String(80), unique=False, nullable=False)
+    # price = Column(Float, unique=False, nullable=False)
+    # quantity = Column(Float, unique=False, nullable=False)
+    # date = Column(Date)
+    trade_hash = Column(Integer, ForeignKey("Trade.trade_hash"))
+
+    trade = relationship("Trade", back_populates="crypto")
+
+class USStock(Base):
+    
+    __tablename__ = 'USStock'
+
+    id = Column(Integer, primary_key=True, index=True)
+    target = Column(String(80), unique=False, nullable=False)
+    # price = Column(Float, unique=False, nullable=False)
+    # quantity = Column(Float, unique=False, nullable=False)
+    # date = Column(Date)
+    trade_hash = Column(Integer, ForeignKey("Trade.trade_hash"))
+
+    trade = relationship("Trade", back_populates="us_stock")

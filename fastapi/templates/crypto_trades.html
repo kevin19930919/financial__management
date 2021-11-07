@@ -1,0 +1,115 @@
+{% extends "utils.html" %}
+{% block body %}
+<main>
+    <div class="container-fluid" style='margin:1%;'>
+        <br>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Trade List</li>
+        </ol>
+        <div class="row mb-3">
+            <div class="col text-left">
+                <button type="button" class="btn btn-outline-primary" onclick='open_create_modal()'  title="Create"><i class="fas fa-plus"></i></button>
+                <button type="button" class="btn btn-outline-primary" onclick='delete_trade()'  title="Delete"><i class="fas fa-trash-alt"></i></button>
+            </div>         
+        </div>
+        <div class="modal fade" id='create_trade_modal' role="dialog">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Create Trade</h4>
+                    </div>
+                    <div class="modal-body" style="margin: 3.5%;">
+                        <div class="form-group">
+                            <label class="col-form-label"><h5>Target:</h5></label>
+                            <input type="text" class="form-control" id="target">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label"><h5>Cost:</h5></label>
+                            <input type=number step=any class="form-control" id="cost">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label"><h5>Unit:</h5></label>
+                            <input type=number step=any class="form-control" id="unit">
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-form-label"><h5>Date:</h5></label>
+                            <input type="date" class='form-control' id="date">
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-form-label"><h5>Exchange:</h5></label>
+                            <input type="text" class='form-control' id="exchange">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary"  id="create_trade" onclick='create_trade()'>Upload</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class='table table-striped table-bordered' id="trade_list">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" onclick="toggle()"></th>
+                        <th>Target</th>
+                        <th>Cost</th>
+                        <th>Unit</th>
+                        <th>Total Cost</th>
+                        <th>Price</th>
+                        <th>Profit</th>
+                        <th>Purchase Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+<script>
+    function check_info_complete (){
+        let target = document.getElementById('target').value;
+        let cost = parseFloat(document.getElementById('cost').value);
+        let unit = parseFloat(document.getElementById('unit').value);
+        let date = document.getElementById('date').value;
+        let exchange = document.getElementById('exchange').value;
+        if (!target || !cost || !unit || !date ||!exchange) { return false }
+        else {
+            return { 
+                'target': target, 
+                'price': cost, 
+                'quantity': unit, 
+                "date": date,
+                "exchange": exchange
+            }
+        }
+    }
+    function create_trade (){
+        let submit_info = check_info_complete();
+        if (!submit_info) { 
+            alert('information not complete!');
+            return };         
+        fetch_create_trade_api(submit_info);
+    };
+    
+    function fetch_create_trade_api (info){
+        console.log(JSON.stringify(info))    
+        fetch('/crypto/trade', 
+        { 
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(info)
+        }).then(function (response){
+            alert(response.json())
+        })
+    }
+    function open_create_modal() {
+        $('#create_trade_modal').modal('show');
+    };
+
+</script>
+{% endblock %}

@@ -2,10 +2,13 @@
 # monkey.patch_all()
 import uvicorn
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
 
 # ==========initial app=============
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="./fastapi/static"), name="static")
+
 # ========app configure=============
 #TODO
 # =========regiter router===========
@@ -15,7 +18,7 @@ sys.path.append('./fastapi')
 from api import cryptoAPI
 from view import cryptoView
 app.include_router(cryptoAPI.cryptoAPIRouter)
-app.include_router(cryptoView.cryptoInfoRouter)
+app.include_router(cryptoView.CryptoTradeListRouter)
 
 
 
@@ -24,4 +27,4 @@ def root():
     return {"message": "Hello World!"}
 
 if __name__ == "__main__":
-    uvicorn.run("run:app", host="0.0.0.0", port=5000, reload=True)
+    uvicorn.run("run:app", host="0.0.0.0", port=5000)

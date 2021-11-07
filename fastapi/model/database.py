@@ -1,13 +1,16 @@
 #Here is the file that defines database connection using SQLAlchemy
 
 
-
 import sqlalchemy
 # from pydantic import BaseModel
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import yaml
 from contextlib import contextmanager
+from datetime import datetime
+
+import base64
+import hashlib
 
 # ================ AIDMS configer =====================
 with open(r'./fastapi/config/config.yaml', 'r') as file:
@@ -21,47 +24,25 @@ Base = declarative_base()
 
 # Sessionmaker is a factory for initializing new Session objects. 
 # Sessionmaker initializes these sessions by requesting a connection from the engine's connection pool and attaching a connection to the new Session object.
-Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-sessionLocal = Session()
+sessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 def get_db_session():
-    db = SessionLocal()
+    db = sessionLocal()
     try:
         yield db
-    except Exception:
+    except Exception as e:
         db.rollback()
-        raise
+        raise e
     finally:
         db.close()
-# class DataBase(Base):
-#     # creating a session object then initial it
-#     Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-#     session = Session()
 
-#     @contextmanager
-#     def auto_commit_db(self):
-#         try:
-#             yield
-#         except Exception as e:
-#             self.session.rollback()
-#             raise e
-#         else:
-#             self.session.commit()
-    
-#     # ==========CRUD method==========
-#     def create(self):
-#         with auto_commit_db():
-#             self.session.add(self)
-
-#     def update(self):
-#         with auto_commit_db():
-#             pass
-
-#     def delete(self):
-#         with auto_commit_db():
-#             self.session.delete(self)        
-
-
+def hash_func(keyword=None):
+    if not keyword :
+        keyword = datetime.now().timestamp()
+    s = hashlib.sha256()
+    s.update(str(keyword).encode('utf-8'))
+    hash_code = s.hexdigest()
+    return hash_code[:12]
 
 
 

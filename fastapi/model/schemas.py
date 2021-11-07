@@ -1,39 +1,48 @@
 # pydantic models,using to filter data for transact with database
 from datetime import date
 from pydantic import BaseModel
-
 from typing import List
+import sys
+sys.path.append('./fatapi/model')
+from database import hash_func
 
 
-class CryptoTrade(BaseModel):
-    id: int
+class Trade(BaseModel):
     date: date
-    target: str
-    price: int
-    quantity: int
+    price: float
+    quantity: float
     
     class Config:
         orm_mode = True
 
-class CreateCryptoTrade(CryptoTrade):
-    pass
 
-class UpdateCryptoTrade(CryptoTrade):
-    pass
-
-
-class USStockTrade(BaseModel):
-    id: int
-    date: date
+class Crypto(BaseModel):
     target: str
-    price: int
-    quantity: int
+    exchange: str
+    # date: date
+    # price: float
+    # quantity: float
+    
+    class Config:
+        orm_mode = True
 
+class CreateCryptoTrade(Crypto, Trade):
+    pass
+
+class UpdateCryptoTrade(Crypto, Trade):
+    pass
+
+
+class USStock(BaseModel):
+    target: str
+    # date: date
+    # price: float
+    # quantity: float
     class Config:
         orm_mode = True        
 
-class CreateUSStockTrade(USStockTrade):
+class CreateUSStockTrade(USStock, Trade):
     pass
 
-class UpdateUSStockTrade(USStockTrade):
+class UpdateUSStockTrade(USStock, Trade):
     pass

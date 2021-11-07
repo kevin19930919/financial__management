@@ -5,8 +5,8 @@ from fastapi.templating import Jinja2Templates
 
 templates = Jinja2Templates(directory="./fastapi/templates")
 
-cryptoInfoRouter = APIRouter(prefix="/cryptoInfo",tags=["cryptoInfo"])
+CryptoTradeListRouter = APIRouter(prefix="/CryptoTradeList",tags=["CryptoTradeList"])
 
-@cryptoInfoRouter.get("/", response_class=HTMLResponse)
+@CryptoTradeListRouter.get("/", response_class=HTMLResponse)
 async def render_crypto(request: Request):
-    return templates.TemplateResponse("crypto.html", {"request": request})
+    return templates.TemplateResponse("crypto_trades.html",{"request": request})

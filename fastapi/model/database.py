@@ -1,6 +1,5 @@
 #Here is the file that defines database connection using SQLAlchemy
 
-
 import sqlalchemy
 # from pydantic import BaseModel
 from sqlalchemy.ext.declarative import declarative_base

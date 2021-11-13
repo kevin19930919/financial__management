@@ -24,11 +24,8 @@ class Crypto(Base):
     id = Column(Integer, primary_key=True, index=True)
     target = Column(String(80), unique=False, nullable=False)
     exchange = Column(String(80), unique=False, nullable=False)
-    # price = Column(Float, unique=False, nullable=False)
-    # quantity = Column(Float, unique=False, nullable=False)
-    # date = Column(Date)
-    trade_hash = Column(Integer, ForeignKey("Trade.trade_hash"))
 
+    trade_hash = Column(Integer, ForeignKey("Trade.trade_hash"))
     trade = relationship("Trade", back_populates="crypto")
 
 class USStock(Base):
@@ -37,9 +34,6 @@ class USStock(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     target = Column(String(80), unique=False, nullable=False)
-    # price = Column(Float, unique=False, nullable=False)
-    # quantity = Column(Float, unique=False, nullable=False)
-    # date = Column(Date)
+    
     trade_hash = Column(Integer, ForeignKey("Trade.trade_hash"))
-
     trade = relationship("Trade", back_populates="us_stock")

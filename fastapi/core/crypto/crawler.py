@@ -15,8 +15,8 @@ class CoinMarketAPI():
     uri = config['uri']
     symbols = config['symbols']
 
-    @staticmethod
-    def parse_symbol(symbolList):
+    @classmethod
+    def parse_symbol(cls, symbolList):
         symbols = ''
         for index, symbol in enumerate(symbolList):
             if index == 0:
@@ -25,18 +25,18 @@ class CoinMarketAPI():
                 symbols = symbols + ',' + symbol  
         return symbols
 
-    @staticmethod
-    def send_request(url, headers, params):
+    @classmethod
+    def send_request(cls, url, headers, params):
         try:
             CryptoPriceInfo = dict()
             res = requests.get(url, headers=headers, params=params)
             queryResults = res.json()['data']
-            for symbol in symbols:
+            for symbol in cls.symbols:
                 CryptoPriceInfo.update({symbol:queryResults[symbol]['quote']['USD']['price']})
             return CryptoPriceInfo
         except Exception as e:
             print(e)
-            raise error        
+            raise e      
     
     @classmethod
     def request_price(cls):
@@ -46,6 +46,6 @@ class CoinMarketAPI():
             'X-CMC_PRO_API_KEY': cls.APIKey,
         }
         queryStrings = {
-            'symbol' : parse_symbol(cls.symbols)
+            'symbol' : cls.parse_symbol(cls.symbols)
         }
-        return send_request(url=uri, headers=headers, params=queryStrings)
+        return cls.send_request(url=uri, headers=headers, params=queryStrings)

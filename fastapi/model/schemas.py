@@ -19,12 +19,14 @@ class Trade(BaseModel):
 class Crypto(BaseModel):
     target: str
     exchange: str
-    # date: date
-    # price: float
-    # quantity: float
     
     class Config:
         orm_mode = True
+
+class GetCryptoTrade(Crypto):
+    trade_hash: str
+    trade: Trade
+    pass
 
 class CreateCryptoTrade(Crypto, Trade):
     pass
@@ -35,9 +37,7 @@ class UpdateCryptoTrade(Crypto, Trade):
 
 class USStock(BaseModel):
     target: str
-    # date: date
-    # price: float
-    # quantity: float
+
     class Config:
         orm_mode = True        
 

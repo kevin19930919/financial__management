@@ -186,11 +186,30 @@
             return response.json()
         }).then(function (_json){
             construct_table(_json)
+        }).then(function(){
+            $('#trade_list').DataTable({
+                retrieve: true,
+                "lengthMenu": [[10, 20, 30, -1], [10, 20, 30, "All"]],
+                "order": [[ 1, "asc" ], [ 6, "desc" ]],
+                "autoWidth": false,
+                "columnDefs": [ {
+                    "targets": 0,
+                    "searchable": false,
+                    "orderable": false,
+                    "className": "text-center",
+                    "width": "3%"
+                } ],
+            })
+
         })
     };
 
 
     fetch_trade_record()
 
+
+
+
+    
 </script>
 {% endblock %}

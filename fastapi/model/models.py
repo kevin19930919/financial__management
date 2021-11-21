@@ -12,6 +12,7 @@ class Trade(Base):
     trade_hash = Column(String(80), default=hash_func, unique=True, nullable=False)
     price = Column(Float, unique=False, nullable=False)
     quantity = Column(Float, unique=False, nullable=False)
+    total_cost = Column(Float, unique=False, nullable=False)
     date = Column(Date)
     
     crypto = relationship("Crypto", back_populates="trade")

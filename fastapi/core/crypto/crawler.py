@@ -39,7 +39,7 @@ class CoinMarketAPI():
             raise e      
     
     @classmethod
-    def request_price(cls):
+    def request_price(cls) -> dict:
         url = f'https://{cls.DomainName}{cls.uri}'
         headers = {
             'Accepts': 'application/json',
@@ -48,4 +48,4 @@ class CoinMarketAPI():
         queryStrings = {
             'symbol' : cls.parse_symbol(cls.symbols)
         }
-        return cls.send_request(url=uri, headers=headers, params=queryStrings)
+        return cls.send_request(url=url, headers=headers, params=queryStrings)

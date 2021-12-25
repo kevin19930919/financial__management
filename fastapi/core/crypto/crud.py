@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 import sys
 sys.path.append('../../model')
 from model import models, schemas
@@ -20,6 +21,7 @@ def create_CryptoTrade(transaction: Session, CryptoTrade: schemas.CreateCryptoTr
         db_trade = models.Trade(
             price=CryptoTrade.price, 
             quantity=CryptoTrade.quantity,
+            total_cost=CryptoTrade.price*CryptoTrade.quantity,
             date=CryptoTrade.date
         )
         transaction.add(db_trade)
@@ -48,3 +50,18 @@ def delete_CryptoTrade(db: Session, trade_hash: str):
         db.commit()
         db.flush()
     return db_CryptoTrade    
+
+# def get_CryproTrade_cost_group_by_target(db: Session, _target: str):
+#     print(f"target symbol:{_target}")
+#     results = db.query(models.Crypto).filter(models.Crypto.target==_target).all()
+#     print('length:',len(results))
+#     total_cost = 0
+#     column = getattr(, )
+
+#     for result in results:
+#         total_cost += result.trade.price*result.trade.quantity)
+        
+
+def get_all_crypto_costs(db: Session):
+    return db.query(models.Crypto.target, func.sum(models.Trade.total_cost)).join(models.Trade).group_by(models.Crypto.target).all()
+

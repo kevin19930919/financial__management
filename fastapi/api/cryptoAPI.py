@@ -57,7 +57,7 @@ def get_all_costs(db: Session = Depends(get_db_session)):
 
 
 #TODO
-@cryptoAPIRouter.get("/crypto_price", )
+@cryptoAPIRouter.get("/current-price", response_model=dict)
 def get_cryptoPrice():
     try:
         return crawler.CoinMarketAPI.request_price()

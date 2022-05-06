@@ -1,25 +1,39 @@
-from fastapi import FastAPI, WebSocket
 import json
 from websocket import create_connection
 import time
-from elasticsearch import Elasticsearch
+
 
 class CoincapWSHandler():
     coincapUrl = "wss://ws.coincap.io"
-    symbols = ["bitcoin"]
+    symbols = ["bitcoin","ethereum"]
+    
+    def construct_assets(self):
+        symbol_string = ""
+        for index in range(len(symbols)):
+            symbol_string+=symbols[index] + ","
+        symbol_string.strip(",")
+        
+        return  symbol_string      
     
     def get_crypto_price(self):
-        for symbol in self.symbols:
+        symbol_string = self.construct_assets()
+        if symbol_string:
             self.send_ws(symbol)
+        else:
+            print("assign target please")
 
-    def send_ws(self, symbol):
-        ws = create_connection(f"{self.coincapUrl}/prices?assets={symbol}")
+    def send_ws(self, symbol_string):
+        ws = create_connection(f"{self.coincapUrl}/prices?assets={symbol_string}")
         while True:
             ws.send(None)
             result = ws.recv()
-            print(result)
             time.sleep(2)
         ws.close()
+    
+    def insert_prices_in_elastic(self, data):
+
+
+
 
 if __name__ == "__main__":
     wsHandler = CoincapWSHandler()

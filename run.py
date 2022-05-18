@@ -21,9 +21,9 @@ app.include_router(cryptoAPI.cryptoAPIRouter)
 app.include_router(cryptoView.CryptoTradeListRouter)
 
 #initial elasticsearch
-es = Elasticsearch(hosts='0.0.0.0', port=9200)
-#show elasticsearch info
-print("elasticsearch info",es.info())
+# es = Elasticsearch(hosts='0.0.0.0', port=9200)
+# #show elasticsearch info
+# print("elasticsearch info",es.info())
 
 
 if __name__ == "__main__":

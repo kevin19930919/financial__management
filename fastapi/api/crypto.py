@@ -12,13 +12,6 @@ from model.database import sessionLocal, engine, get_db_session
 from fastapi import APIRouter
 
 cryptoRouter = APIRouter(prefix="/crypto",tags=["crypto"])
-# # Dependency
-# def get_db():
-#     connection = sessionLocal()
-#     try:
-#         yield connection
-#     finally:
-#         connection.close()
 
 
 @cryptoRouter.post("/trade", response_model=schemas.CreateCryptoTrade)

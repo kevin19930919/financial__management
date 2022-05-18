@@ -34,7 +34,6 @@ class CreateCryptoTrade(Crypto, Trade):
 class UpdateCryptoTrade(Crypto, Trade):
     pass
 
-
 class USStock(BaseModel):
     target: str
 
@@ -46,3 +45,11 @@ class CreateUSStockTrade(USStock, Trade):
 
 class UpdateUSStockTrade(USStock, Trade):
     pass
+
+class Alert(BaseModel):
+    crypto:str
+	direction:bool
+	price:float
+    
+    class Config:
+        orm_mode = True

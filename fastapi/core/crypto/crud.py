@@ -25,7 +25,6 @@ def create_CryptoTrade(transaction: Session, CryptoTrade: schemas.CreateCryptoTr
             date=CryptoTrade.date
         )
         transaction.add(db_trade)
-        transaction.flush()
         
         db_Crypto = models.Crypto(
             target=CryptoTrade.target,
@@ -33,8 +32,8 @@ def create_CryptoTrade(transaction: Session, CryptoTrade: schemas.CreateCryptoTr
             trade_hash=db_trade.trade_hash
             )
         transaction.add(db_Crypto)
-        transaction.flush()
 
+        transaction.flush()
         transaction.commit()
         transaction.refresh(db_Crypto)
         transaction.refresh(db_trade)
@@ -65,3 +64,18 @@ def delete_CryptoTrade(db: Session, trade_hash: str):
 def get_all_crypto_costs(db: Session):
     return db.query(models.Crypto.target, func.sum(models.Trade.total_cost)).join(models.Trade).group_by(models.Crypto.target).all()
 
+def create_Alert(db: Session, AlertInfo: schemas.Alert):
+    try:
+        db_alert = models.Alert(
+            price=AlertInfo.price, 
+            crypto=AlertInfo.crypto,
+            direction=AlertInfo.direction,
+        )
+        transaction.add(db_alert)
+
+        transaction.flush()
+        transaction.commit()
+        transaction.refresh(db_alert)
+    except Exception as e:
+        print('============create peoblem in crud==========',e)
+    return AlertInfo

@@ -18,7 +18,6 @@ class Trade(Base):
     crypto = relationship("Crypto", back_populates="trade")
     us_stock = relationship("USStock", back_populates="trade")
 
-
 class Crypto(Base):
     __tablename__ = 'Crypto'
 
@@ -38,3 +37,12 @@ class USStock(Base):
     
     trade_hash = Column(Integer, ForeignKey("Trade.trade_hash"))
     trade = relationship("Trade", back_populates="us_stock")
+
+class Alert(Base):
+    
+    __tablename__ = 'Alert'
+
+    id = Column(Integer, primary_key=True, index=True)
+	crypto = Column(String(80), unique=False, nullable=False)
+	direction = Column(Boolean, default=True)
+	price = Column(Float, unique=False, nullable=False)

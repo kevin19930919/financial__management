@@ -54,8 +54,6 @@ def get_all_costs(db: Session = Depends(get_db_session)):
 #         raise HTTPException(status_code = 404, detail =  "source not found")        
  
 
-
-
 #TODO
 @cryptoAPIRouter.get("/current-price", response_model=dict)
 def get_cryptoPrice():

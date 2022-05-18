@@ -5,36 +5,49 @@ import sys
 sys.path.append('./fastapi/model')
 from database import Base, hash_func
 
-class Trade(Base):
-    __tablename__ = 'Trade'
+class Account(Base):
+    __tablename__ = "Account"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    account = Column(String(80), unique=True, nullable=False)
+    password = Column(String(80), unique=True, nullable=False)
+    
+    projct = relationship("Project", back_populates="account")
+
+class Project_Report(Base):
+    __tablename__ = "Project_Report"
+    
+    project_id = Column(Integer, ForeignKey('Project.id')),
+    report_id = Column(Integer, ForeignKey('Report.id')))
+
+class Project(Base):
+    __tablename__ = "Project"
 
     id = Column(Integer, primary_key=True, index=True)
-    trade_hash = Column(String(80), default=hash_func, unique=True, nullable=False)
-    price = Column(Float, unique=False, nullable=False)
-    quantity = Column(Float, unique=False, nullable=False)
-    total_cost = Column(Float, unique=False, nullable=False)
+    name = Column(String(80), unique=False, nullable=False)
+
+    account_id = Column(Integer, ForeignKey("Account.id"))
+    account = relationship("Account", back_populates="project")
+
+class Report(Base):
+    __tablename__ = "Report"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(80), unique=False, nullable=False)
     date = Column(Date)
-    
-    crypto = relationship("Crypto", back_populates="trade")
-    us_stock = relationship("USStock", back_populates="trade")
 
+    project = relationship("Report", secondary=Project_Report, backref="report")
 
-class Crypto(Base):
-    __tablename__ = 'Crypto'
-
+class Statement(Base):
+    __tablename__ "Statement"
     id = Column(Integer, primary_key=True, index=True)
-    target = Column(String(80), unique=False, nullable=False)
-    exchange = Column(String(80), unique=False, nullable=False)
+    text = Column(String(200), unique=False, nullable=True)
+    progress = Column(Integer, unique=False, nullable=False)
+    predict_finish_date = Column(Date)
 
-    trade_hash = Column(Integer, ForeignKey("Trade.trade_hash"))
-    trade = relationship("Trade", back_populates="crypto")
+    project_id = Column(Integer, ForeignKey("Project.id"))
+    report_id = Column(Integer, ForeignKey("Report.id"))
 
-class USStock(Base):
-    
-    __tablename__ = 'USStock'
 
-    id = Column(Integer, primary_key=True, index=True)
-    target = Column(String(80), unique=False, nullable=False)
-    
-    trade_hash = Column(Integer, ForeignKey("Trade.trade_hash"))
-    trade = relationship("Trade", back_populates="us_stock")
+
+

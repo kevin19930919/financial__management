@@ -12,7 +12,7 @@ class Target(str, Enum):
 
 templates = Jinja2Templates(directory="./fastapi/templates")
 
-CryptoTradeListRouter = APIRouter(prefix="/Crypto",tags=["Crypto"])
+CryptoTradeListRouter = APIRouter(prefix="/crypto",tags=["crypto"])
 
 @CryptoTradeListRouter.get("/list", response_class=HTMLResponse)
 async def render_crypto(request: Request):

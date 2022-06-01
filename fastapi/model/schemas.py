@@ -48,8 +48,8 @@ class UpdateUSStockTrade(USStock, Trade):
 
 class Alert(BaseModel):
     crypto:str
-	direction:bool
-	price:float
-    
+    direction:bool
+    price:float
+
     class Config:
         orm_mode = True

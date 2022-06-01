@@ -29,7 +29,6 @@ class Crypto(Base):
     trade = relationship("Trade", back_populates="crypto")
 
 class USStock(Base):
-    
     __tablename__ = 'USStock'
 
     id = Column(Integer, primary_key=True, index=True)
@@ -39,10 +38,8 @@ class USStock(Base):
     trade = relationship("Trade", back_populates="us_stock")
 
 class Alert(Base):
-    
     __tablename__ = 'Alert'
-
     id = Column(Integer, primary_key=True, index=True)
-	crypto = Column(String(80), unique=False, nullable=False)
-	direction = Column(Boolean, default=True)
-	price = Column(Float, unique=False, nullable=False)
+    crypto = Column(String(80), unique=False, nullable=False)
+    direction = Column(Boolean, default=True)
+    price = Column(Float, unique=False, nullable=False)

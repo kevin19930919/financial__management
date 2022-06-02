@@ -5,12 +5,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
-options = webdriver.ChromeOptions()
-options.add_argument("--disable-notifications")
-options.add_argument('--no-sandbox')
-options.add_argument('--disable-dev-shm-usage')
-options.add_argument('--headless')
-driver = webdriver.Chrome('./chromedriver', chrome_options=options)
 
 from dataclasses import dataclass
 from typing import List
@@ -27,15 +21,20 @@ class CakeresumeCrawler():
         self.job_filters = filters
     
     def construct_query_url(self):
-        base_url += f"q={self.job_filters.query}"
-        base_url += f"&refinementList%5Bsalary_type%5D=per_year&refinementList%5Bsalary_currency%5D=TWD"
-        base_url += f"&range%5Bsalary_range%5D%5Bmin%5D={self.job_filters.base_salary}"
-        for label in self.job_filters.tech_label:
-            base_url += f"&refinementList%5Bpage.tech_labels%5D%5B0%5D={label}"
-        
-        return base_url    
+        self.base_url += f"?q={self.job_filters.query}"
+        self.base_url += f"&refinementList%5Bsalary_type%5D=per_year&refinementList%5Bsalary_currency%5D=TWD"
+        for index, label in enumerate(self.job_filters.tech_label):
+            self.base_url += f"&refinementList%5Bpage.tech_labels%5D%5B{index}%5D={label}"
+        self.base_url += f"&range%5Bsalary_range%5D%5Bmin%5D={self.job_filters.base_salary}"
+        return self.base_url    
 
     def craw_page(self):
+        options = webdriver.ChromeOptions()
+        options.add_argument("--disable-notifications")
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--headless')
+        driver = webdriver.Chrome('./chromedriver', chrome_options=options)
         driver.get(construct_query_url)
         # driver.set_window_size(800,600)
         # print(f"======== render done ======")

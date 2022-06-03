@@ -1,18 +1,19 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import time
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 
 from dataclasses import dataclass
 from typing import List
+
+import argparse
+
 @dataclass
 class Filter:
     query: str
     base_salary: int
     tech_label: List[str]
+    item_number: int
 
 
 class CakeresumeCrawler():
@@ -35,29 +36,43 @@ class CakeresumeCrawler():
         options.add_argument('--disable-dev-shm-usage')
         options.add_argument('--headless')
         driver = webdriver.Chrome('./chromedriver', chrome_options=options)
-        driver.get(construct_query_url)
-        # driver.set_window_size(800,600)
-        # print(f"======== render done ======")
-        button = driver.find_element_by_id('Animal')
-        desired_y = (button.size['height'] / 2) + button.location['y']
-        print("======== target position:",button.size['height'],button.location['y'])
-        # current_y = (driver.execute_script('return window.innerHeight') / 2) + driver.execute_script('return window.pageYOffset')
-        print("======= current_y:",driver.execute_script('return window.pageYOffset'))
-        # scroll_y_by = desired_y - current_y
-        # print("======scroll_y_by:",scroll_y_by)
-        driver.execute_script("window.scrollTo(0,1310);")
-        time.sleep(3)
-        print("======= current_y2:",driver.execute_script('return window.pageYOffset'))
+        # print(self.construct_query_url())
+        driver.get(self.construct_query_url())
+        # driver.implicitly_wait(20)
+        title_list = self.scrap_title(driver)
+        salary_list = self.scrap_salary(driver)
+        result = self.concate_result(title_list, salary_list)
+        driver.quit()
+        return result
 
-        ActionChains(driver).move_to_element_with_offset(button,5,5).click(button).perform()
+    def scrap_title(self, driver):
+        title_list = []
+        for i in range(1, self.job_filters.item_number+1):
+            title_xpath = f'//*[@id="root"]/div/div[2]/div/div/div[1]/div[7]/div/div[{i}]/div[1]/div[1]/h2/div/a'
+            title = driver.find_element_by_xpath(title_xpath).text
+            title_list.append(title)
+        return title_list  
 
-        time = 0
-        while True: 
-            try:
-                driver.find_element_by_xpath('/html/body/div[1]/div/div[2]/div/table/tr[1]/td[5]/button').click()
-                print("press success count",time)
-                time += 1
-            except Exception as e:
-                print(e)    
+    def scrap_salary(self, driver):
+        salary_list = []
+        for i in range(1, self.job_filters.item_number+1):
+            salary_xpath = f'//*[@id="root"]/div/div[2]/div/div/div[1]/div[7]/div/div[{i}]/div[1]/div[2]/div[1]/div[2]/span'
+            salary = driver.find_element_by_xpath(salary_xpath).text
+            salary_list.append(salary)
+        return salary_list
 
-        dirver.quit()
+    def concate_result(self, titles, salarys):
+        return list(zip(titles, salarys))
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--keyword", type=str)
+    parser.add_argument("--base-salary", type=int)
+    parser.add_argument("--techs", type=str, nargs='+')
+    parser.add_argument("--item-number", type=int)                    
+    args = parser.parse_args()
+    filters = Filter(query=args.keyword, base_salary=args.base_salary, tech_label=args.techs, item_number=args.item_number)
+    cakeresume_crawler = CakeresumeCrawler(filters=filters)
+    result = cakeresume_crawler.craw_page()
+    print(result)        
+

@@ -30,25 +30,3 @@ class CoincapWSHandler():
             time.sleep(2)
         ws.close()
     
-    def insert_prices_in_elastic(self, data):
-
-
-
-
-if __name__ == "__main__":
-    wsHandler = CoincapWSHandler()
-    wsHandler.get_crypto_price()
-
-
-
-
-# @app.websocket("/ws")
-# async def websocket_endpoint(websocket: WebSocket):
-#     # 1、ws 連線
-#     await websocket.accept()
-#     while True:
-#         # 2、接收客戶端傳送的內容
-#         data = await websocket.receive_text()
-
-#         # 3、服務端傳送內容
-#         await websocket.send_text(f"小菠蘿收到的訊息是: {data}")

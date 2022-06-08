@@ -1,0 +1,12 @@
+kind: pipeline
+type: exec
+name: push_event
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: unit test
+  commands:
+  - cd /data2/kevin7552/financial__management/fastapi/test
+  - pytest test_mail.py

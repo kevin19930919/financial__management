@@ -1,13 +1,16 @@
 kind: pipeline
-type: exec
+type: docker
 name: push_event
-platform:
-  os: linux
-  arch: amd64
-
 steps:
-- name: unit test
-  commands:
-  - source .bashrc
-  - cd /data2/kevin7552/financial__management/fastapi/test
-  - pytest test_mail.py
+  - name: unit test
+    image: "finance_management:v1"
+    commands:
+      - cd /home/financial__management/fastapi/test
+      - pytest test_mail.py
+    volumes:
+      - name: source_code
+        path: /home/financial__management
+volumns:
+  - name: source_code
+    host:
+      path: /data2/kevin7552/financial__management

@@ -8,5 +8,6 @@ platform:
 steps:
 - name: unit test
   commands:
+  - source .bashrc
   - cd /data2/kevin7552/financial__management/fastapi/test
   - pytest test_mail.py

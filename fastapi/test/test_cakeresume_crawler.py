@@ -2,7 +2,8 @@ import sys
 sys.path.append("../core")
 from cakeresume_crawler import *
 import pytest
-
+import requests
+from fastapi.encoders import jsonable_encoder
 class TestCakeresumeCrawler():
     # initial filter
     filters = Filter(query="backend", base_salary=1000000, tech_label=["Python", "Go"], item_number=10)
@@ -15,3 +16,6 @@ class TestCakeresumeCrawler():
     def test_craw_page(self):
         result = self.cakeresume_crawler.craw_page()
         print(result)
+
+
+        

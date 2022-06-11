@@ -15,16 +15,14 @@ app.mount("/static", StaticFiles(directory="./fastapi/static"), name="static")
 #TODO
 import sys
 sys.path.append('./fastapi')
-from api import cryptoAPI
+from api import cryptoAPI, cakeresumeAPI
 from view import cryptoView
 app.include_router(cryptoAPI.cryptoAPIRouter)
+app.include_router(cakeresumeAPI.CakeresumeRouter)
 app.include_router(cryptoView.CryptoTradeListRouter)
 
-#initial elasticsearch
-# es = Elasticsearch(hosts='0.0.0.0', port=9200)
-# #show elasticsearch info
-# print("elasticsearch info",es.info())
+
 
 
 if __name__ == "__main__":
-    uvicorn.run("run:app", host="0.0.0.0", port=5000)
+    uvicorn.run("run:app", host="0.0.0.0", port=1219)

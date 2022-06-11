@@ -1,3 +1,8 @@
 template_folder: /workspace/aidms/templates
 static_folder: /workspace/aidms/static
 db_path: ./fastapi/database/sqlite.db
+
+rabbitmq_user: root
+rabbitmq_password: kevin7552
+
+cakeresume_receivers: ["kevin19930919@gmail.com", "kevin_tsai@leadtek.com.tw"]

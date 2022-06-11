@@ -42,18 +42,7 @@ def get_all_costs(db: Session = Depends(get_db_session)):
         return crud.get_all_crypto_costs(db=db)
     except Exception as e:
         print(e)    
-# @cryptoAPIRouter.get("/trades/cost")
-# def get_Crypto_group_by_target(target: Optional[str], db: Session = Depends(get_db_session)):
-#     try:
-#         if target:
-#             return crud.get_CryproTrade_cost_group_by_target(db=db, _target=target)
-#         else:
-#             return crud.get_all_CryproTrade_cost(db=db)
-#     except Exception as e:
-#         print(e)   
-#         raise HTTPException(status_code = 404, detail =  "source not found")        
  
-
 #TODO
 @cryptoAPIRouter.get("/current-price", response_model=dict)
 def get_cryptoPrice():

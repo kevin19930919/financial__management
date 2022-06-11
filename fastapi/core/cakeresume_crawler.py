@@ -62,17 +62,11 @@ class CakeresumeCrawler():
         return salary_list
 
     def concate_result(self, titles, salarys):
-        return list(zip(titles, salarys))
+        results =  {}
+        for index in range(len(titles)):
+            results[titles[index]] == salarys[index]
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--keyword", type=str)
-    parser.add_argument("--base-salary", type=int)
-    parser.add_argument("--techs", type=str, nargs='+')
-    parser.add_argument("--item-number", type=int)                    
-    args = parser.parse_args()
-    filters = Filter(query=args.keyword, base_salary=args.base_salary, tech_label=args.techs, item_number=args.item_number)
-    cakeresume_crawler = CakeresumeCrawler(filters=filters)
-    result = cakeresume_crawler.craw_page()
-    print(result)        
+        return results
+
+         
 

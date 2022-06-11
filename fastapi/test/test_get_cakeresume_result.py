@@ -32,7 +32,12 @@ class TestCakeresume():
     def test_stop_container(self):
         stop_reuslt = self.docker_handler.stop_container()
         assert stop_reuslt == True  
-
+    
+    def test_api(self):
+        json_compatible_filter = jsonable_encoder(self.filters)
+        req = requests.post("http://0.0.0.0:1219/cakeresume/jobs", json_compatible_filter)
+        assert req.status_code == req.ok
+        
 
 
 

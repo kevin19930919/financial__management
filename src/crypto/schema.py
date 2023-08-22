@@ -7,7 +7,9 @@ sys.path.append('./fatapi/model')
 
 class Crypto(BaseModel):
     target: str
-    exchange: str
+    action: str
+    price: float
+    quantity: float
     
     class Config:
         orm_mode = True

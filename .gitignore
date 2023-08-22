@@ -1,3 +1,5 @@
 __pycache__
 pyc
 fastapi/chromedriver
+*secrect.yaml
+config.yaml

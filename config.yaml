@@ -5,4 +5,14 @@ db_path: ./fastapi/database/sqlite.db
 rabbitmq_user: root
 rabbitmq_password: kevin7552
 
-cakeresume_receivers: ["kevin19930919@gmail.com", "kevin_tsai@leadtek.com.tw"]
+coin_market_cap_api_Key: c2b24a2f-3402-46a0-8d69-ece52f28bb09
+symbols: 
+    - ETH
+    - FTT
+    - MOVR
+    - DOT
+    - META
+    - BTC
+    - XY
+    - SUPER
+    - ADA

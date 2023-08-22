@@ -2,16 +2,15 @@ import requests
 import yaml
 
 
-# ==============from config import env============
-with open(r'fastapi/core/crypto/config.yaml', 'r') as file:
+with open(r'./config.yaml', 'r') as file:
     config = yaml.full_load(file)
+ 
 
-# =========main function==========================
 class CoinMarketAPI():
     
-    APIKey = config['APIKey']
-    DomainName = config['DomainName']
-    uri = config['uri']
+    APIKey = config['coin_market_cap_api_Key']
+    DomainName = "pro-api.coinmarketcap.com"
+    uri = "/v1/cryptocurrency/quotes/latest"
     symbols = config['symbols']
 
     @classmethod

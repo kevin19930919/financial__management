@@ -43,7 +43,7 @@ def get_all_costs(db: Session = Depends(get_db_session)):
     except Exception as e:
         print(e)    
  
-#TODO
+
 @cryptoAPIRouter.get("/current-price", response_model=dict)
 def get_cryptoPrice():
     try:

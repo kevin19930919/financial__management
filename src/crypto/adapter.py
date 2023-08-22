@@ -1,14 +1,14 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
-import models
-import schema
+from . import models
+from . import schema
 
 #TODO
 def get_CryptoTrades(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Crypto).offset(skip).limit(limit).all()
 
-def create_CryptoTrade(transaction: Session, CryptoTrade: schema.CreateCryptoTrade):
+def create_crypto_trade(transaction: Session, CryptoTrade: schema.CreateCryptoTrade):
     try:
         db_trade = models.Trade(
             price=CryptoTrade.price, 

@@ -10,7 +10,7 @@ from datetime import datetime
 
 import hashlib
 
-with open(r'./fastapi/config/config.yaml', 'r') as file:
+with open(r'./config.yaml', 'r') as file:
     config = yaml.full_load(file)
 DATABASE_URL = f'sqlite:///{config["db_path"]}'
 engine = sqlalchemy.create_engine(DATABASE_URL, connect_args={"check_same_thread": False})

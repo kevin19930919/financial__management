@@ -2,7 +2,7 @@ from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float
 from sqlalchemy.types import Date
 import sys
 sys.path.append("../")
-from database import Base
+from ..database import Base
 
 
 class Crypto(Base):

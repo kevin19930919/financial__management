@@ -21,7 +21,18 @@ def create_CryptoTrade(CryptoTrade: schema.CreateCryptoTrade, transaction: Sessi
 @cryptoAPIRouter.get("/price", response_model=dict)
 def get_cryptoPrice():
     try:
-        return service.CoinMarketAPI.request_price()
+        print(">>>>>>>>")
+        return service.CoinMarketAPI.get_all_price()
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code = 404, detail =  "source not found")
+    
+@cryptoAPIRouter.get("/price/history", response_model=dict)
+def get_crpyto_pricve_history(symbol:str):
+    try:
+        if not symbol:
+            symbol = "BTC"
+        return service.CoinMarketAPI.get_historical_quote(symbol)
     except Exception as e:
         print(e)
         raise HTTPException(status_code = 404, detail =  "source not found")
